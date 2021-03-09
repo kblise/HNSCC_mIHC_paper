@@ -2568,3 +2568,13 @@ def fig4():
     #plt.show()
     plt.close()   
     print("Figure 4E saved to 'figures' folder.")
+    
+    
+    
+
+
+if __name__=="__main__":
+    fig1()
+    fig2()
+    fig3()
+    fig4()
