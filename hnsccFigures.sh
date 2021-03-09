@@ -10,10 +10,12 @@ This .sh bash script will
     -run hnsccMakeFigures.py file to generate Figures 1-4 from the following paper:
     'Single-cell spatial proteomics analyses of head and neck squamous cell carcinoma reveal tumor heterogeneity and immune architectures associated with clinical outcome'
 
+Usage:
+    1) Open Terminal and navigate to desired directory: cd Desired/Directory/Here/
+    2) Clone repo: git clone https://github.com/kblise/HNSCC_mIHC_paper.git
+    3) Navigate into HNSCC_mIHC_paper directory: cd HNSCC_mIHC_paper
+    4) Run this bash script: bash hnsccFigures.sh
 """
-
-#Navigate into directory with github repo
-cd HNSCC_mIHC_paper/
 
 #Create two new folders in HNSCC_mIHC_paper directory
 mkdir {dfCreated,figures}
