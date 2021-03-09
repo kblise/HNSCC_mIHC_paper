@@ -1,21 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Code author: Katie E. Blise
-Date: March, 2021
 
-This .sh bash script will 
-    -create a new conda environment
-    -download clinical data and mIHC data from Zenodo DOI: 10.5281/zenodo.4584441
-    -run hnsccMakeFigures.py file to generate Figures 1-4 from the following paper:
-    'Single-cell spatial proteomics analyses of head and neck squamous cell carcinoma reveal tumor heterogeneity and immune architectures associated with clinical outcome'
 
-Usage:
-    1) Open Terminal and navigate to desired directory: cd Desired/Directory/Here/
-    2) Clone repo: git clone https://github.com/kblise/HNSCC_mIHC_paper.git
-    3) Navigate into HNSCC_mIHC_paper directory: cd HNSCC_mIHC_paper
-    4) Run this bash script: bash hnsccFigures.sh
-"""
+#Code author: Katie E. Blise
+#Date: March, 2021
+
+#This .sh bash script will 
+#    -create a new conda environment
+#    -download clinical data and mIHC data from Zenodo DOI: 10.5281/zenodo.4584441
+#    -run hnsccMakeFigures.py file to generate Figures 1-4 from the following paper:
+#    'Single-cell spatial proteomics analyses of head and neck squamous cell carcinoma reveal tumor heterogeneity and immune architectures associated with clinical outcome'
+
+#Usage:
+#    1) Open Terminal and navigate to desired directory: cd Desired/Directory/Here/
+#    2) Clone repo: git clone https://github.com/kblise/HNSCC_mIHC_paper.git
+#    3) Navigate into HNSCC_mIHC_paper directory: cd HNSCC_mIHC_paper
+#    4) Run this bash script: bash hnsccFigures.sh
+
 
 #Create two new folders in HNSCC_mIHC_paper directory
 mkdir {dfCreated,figures}
@@ -33,12 +34,7 @@ pip install zenodo_get
 zenodo_get -r 4584441
 
 #Run python file hnsccMakeFigures.py to create Figures 1-4 
-python
-from hnsccMakeFigures import fig1, fig2, fig3, fig4
-fig1()
-fig2()
-fig3()
-fig4()
+python hnsccMakeFigures.py
 
 #Quit python
 quit()
