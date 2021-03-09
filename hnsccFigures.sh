@@ -35,9 +35,3 @@ zenodo_get -r 4584441
 
 #Run python file hnsccMakeFigures.py to create Figures 1-4 
 python hnsccMakeFigures.py
-
-#Quit python
-quit()
-
-#Deactivate hnsccEnv conda environment
-conda deactivate
