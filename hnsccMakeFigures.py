@@ -57,9 +57,9 @@ def getCsvs():
     #import packages
     import os
     
-    #get list of all files in current directory
+    #get list of all files in current directory/data
     cwd = os.getcwd()
-    files = os.listdir(cwd)
+    files = os.listdir(cwd+'/data')
     
     #keep only tumor regions in csvList
     filesUpdate = []
@@ -70,7 +70,6 @@ def getCsvs():
     
     
     #create csvList to store correct csvs, in correct order for further analyses
-
     #empty list to store csvs in correct order    
     csvList = []
     
@@ -147,7 +146,7 @@ def countsToCsv(cellList,norm):
     
     ##create new df and add clinical data to it
     #get clinical df data
-    dfClin = pd.read_csv(cwd+'/clinicalData.csv', index_col=0)
+    dfClin = pd.read_csv(cwd+'/data/clinicalData.csv', index_col=0)
     
     #empty lists to store clinical data from dfClin
     dtrList = []
@@ -176,7 +175,7 @@ def countsToCsv(cellList,norm):
     
     #loop through csvs and calculate counts
     for file in csvList:
-        df = pd.read_csv(cwd+'/'+file+'.csv',index_col=0)
+        df = pd.read_csv(cwd+'/data/'+file+'.csv',index_col=0)
     
     
         #only include specified cell types in the df
@@ -353,7 +352,7 @@ def calculateMixing(distThresh,cellList):
         
     ##create new df and add clinical data to it
     #get clinical df data
-    dfClin = pd.read_csv(cwd+'/clinicalData.csv', index_col=0)
+    dfClin = pd.read_csv(cwd+'/data/clinicalData.csv', index_col=0)
     
     #empty lists to store clinical data from dfClin
     dtrList = []
@@ -384,7 +383,7 @@ def calculateMixing(distThresh,cellList):
         print('Calculating mixing score for '+file+'...')
         
         #read original tumor region csv
-        df = pd.read_csv(cwd+'/'+file+'.csv', index_col=0)
+        df = pd.read_csv(cwd+'/data/'+file+'.csv', index_col=0)
         
         #create list of cell types to keep in the df; will include the specified cells from cellList parameter plus the tumor population
         keepCells = cellList + ['H']
@@ -493,7 +492,7 @@ def calculateCold():
     immCountDict = {}
     
     for file in csvList:
-        df = pd.read_csv(cwd+'/'+file+'.csv', index_col=0)
+        df = pd.read_csv(cwd+'/data/'+file+'.csv', index_col=0)
     
         counts = df['class'].value_counts()
         
@@ -563,7 +562,7 @@ def pdCounts():
 
     ##create new df and add clinical data to it
     #get clinical df data
-    dfClin = pd.read_csv(cwd+'/clinicalData.csv', index_col=0)
+    dfClin = pd.read_csv(cwd+'/data/clinicalData.csv', index_col=0)
     
     #empty lists to store clinical data from dfClin
     dtrList = []
@@ -603,7 +602,7 @@ def pdCounts():
         #print(file) #to keep track of progress
     
         #get original csv
-        df = pd.read_csv(cwd+'/'+file+'.csv',index_col=0)
+        df = pd.read_csv(cwd+'/data/'+file+'.csv',index_col=0)
     
     
         for cell in cellList:
@@ -644,7 +643,7 @@ def pdCounts():
     #get original region's csv to get cell counts from
     for pt in ptList:
         #print(pt) #to keep track of progress
-        df = pd.read_csv(cwd+'/'+pt+'.csv',index_col=0)
+        df = pd.read_csv(cwd+'/data/'+pt+'.csv',index_col=0)
     
         #get array of counts for each cell type in the original ROI
         cellCounts = df['class'].value_counts()
@@ -727,7 +726,7 @@ def kiCounts():
 
     ##create new df and add clinical data to it
     #get clinical df data
-    dfClin = pd.read_csv(cwd+'/clinicalData.csv', index_col=0)
+    dfClin = pd.read_csv(cwd+'/data/clinicalData.csv', index_col=0)
     
     #empty lists to store clinical data from dfClin
     dtrList = []
@@ -763,7 +762,7 @@ def kiCounts():
     for file in csvList:
     
         #get original csv for each tumor region
-        df = pd.read_csv(cwd+'/'+file+'.csv',index_col=0)
+        df = pd.read_csv(cwd+'/data/'+file+'.csv',index_col=0)
     
         for cell in cellList: #only include cells that we want
 
@@ -796,7 +795,7 @@ def kiCounts():
     
     #get original region's csv to get cell counts from
     for pt in ptList:
-        df = pd.read_csv(cwd+'/'+pt+'.csv',index_col=0)
+        df = pd.read_csv(cwd+'/data/'+pt+'.csv',index_col=0)
     
         #get array of counts for each cell type in the original region
         cellCounts = df['class'].value_counts()
@@ -881,7 +880,7 @@ def makeNeighborhoods(seed,distThresh):
         #print('Creating neighborhoods for '+file+'...') #to keep track of progress
     
         #load original region's csv
-        df = pd.read_csv(cwd+'/'+file+'.csv', index_col=0)
+        df = pd.read_csv(cwd+'/data/'+file+'.csv', index_col=0)
     
         #create filtered dataframe without noise
         filt_df = df[(df['class'] != 'G')] #G=noise
@@ -1156,7 +1155,7 @@ def clusterCountPerROI(name):
 
     #now create new df from dictCounts data and add dtr
     #get clinical df
-    dfClin = pd.read_csv(cwd+'/clinicalData.csv', index_col=0)
+    dfClin = pd.read_csv(cwd+'/data/clinicalData.csv', index_col=0)
     
     #empty list to store clinical data from dfClin
     dtrList = []
@@ -1956,7 +1955,7 @@ def fig3():
     for file in files:
             
         #read original csv file
-        df = pd.read_csv(cwd+'/'+file+'.csv', index_col=0)
+        df = pd.read_csv(cwd+'/data/'+file+'.csv', index_col=0)
     
         #list of lists - cell types to plot - immune only (I), tumor only (T), immune&tumor (IT)
         classListBig = [['E','A','B','K','C','D','J','X'],['H'],['H','E','A','B','K','C','D','J','X']]
