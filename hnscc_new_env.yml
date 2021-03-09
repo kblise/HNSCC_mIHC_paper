@@ -1,4 +1,6 @@
 name: hnsccEnv
+channels:
+  - conda-forge
 dependencies:
   - python=3.6.5
   - pandas=0.23.0
