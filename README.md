@@ -14,7 +14,7 @@ This repository contains all code necessary to reproduce the results and figures
 
 **3.** Navigate into HNSCC_mIHC_paper folder: `cd HNSCC_mIHC_paper/`
 
-**4.** Run the bash script to create Figures 1-4: `bash hnsccFigures.sh`
+**4.** Run the bash script to download necessary data from Zenodo and create Figures 1-4: `bash hnsccFigures.sh`
 
 
 **Note: all csvs created to generate figures will be saved to the 'dfCreated' folder and all figures will be saved to the 'figures' folder.**
