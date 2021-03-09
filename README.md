@@ -21,7 +21,7 @@ This repository contains all code necessary to reproduce the results and figures
 
 **c.** Activate hnsccEnv conda environment: `source activate hnsccEnv` or `conda activate hnsccEnv`
 
-## 3) Create new folders and download data from Zenodo:
+## 3) Create new folders and download data from Zenodo
 
 **a.** Create three new folders in HNSCC_mIHC_paper directory: `mkdir {data,dfCreated,figures}`
 
