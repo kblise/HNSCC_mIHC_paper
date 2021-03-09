@@ -9,7 +9,7 @@ This repository contains all code necessary to reproduce the results and figures
 
 **a.** Open Terminal and navigate to desired directory: `cd Desired/Directory/Here/`
 
-**b.** Cone repo: `git clone https://github.com/kblise/HNSCC_mIHC_paper.git`
+**b.** Clone repo: `git clone https://github.com/kblise/HNSCC_mIHC_paper.git`
 
 ## 2) Create new conda environment
 
