@@ -28,11 +28,9 @@ This .py file contains multiple functions:
     
 
 Note: This program assumes the following items live in the same directory as this .py file:
-    -all mIHC data (.csv files)
-    -clinical data file (.csv)
     -'dfCreated' folder
     -'figures' folder
-  
+    -'data' folder, which houses: all mIHC data (.csv files) and clinical data file (.csv)  
 
 This program is intended for Python version 3.
 """
@@ -45,7 +43,7 @@ def getCsvs():
     
     '''
     This function generates a list containing all 47 tumor regions analyzed.
-    Note: all tumor regions are assumed to be stored in the same folder as this .py file.
+    Note: all tumor regions are assumed to be downloaded and stored in the 'data' folder.
     
     Input parameters:
         None
@@ -1212,9 +1210,9 @@ def fig1():
     
     #import packages
     import plotly.graph_objs as go
+    import plotly.io as pio
     import pandas as pd
     import os
-    from plotly.offline import plot
     from scipy.stats import entropy
     import seaborn as sns
     import matplotlib.pyplot as plt
@@ -1267,10 +1265,9 @@ def fig1():
         traces.append(trace)
     
     layout = {'title':'Intra-Tumoral Heterogeneity (All Cell Types)','xaxis':{'title':'Tumor'},'yaxis':{'title':'Fraction Present'},'boxmode':'group','boxgroupgap':1,'plot_bgcolor':'rgba(0,0,0,0)'}
-    
-    fig = {'data':traces,'layout':layout}
-    plot(fig,filename=cwd+'/figures/figure1A.html',image_width=1000, image_height=500) #saves figure to 'figures' folder as an html file
-    
+    fig = {'data':traces,'layout':layout}    
+    pio.write_image(fig,cwd+'/figures/figure1A.png',format='png',scale=2) #saves figure to 'figures' folder as a png file
+
     print("Figure 1A saved to 'figures' folder.")
     
     
@@ -1304,10 +1301,9 @@ def fig1():
         traces.append(trace)
     
     layout = {'title':'Intra-Tumoral Heterogeneity (Immune Cells Only)','xaxis':{'title':'Tumor'},'yaxis':{'title':'Fraction Present'},'boxmode':'group','boxgroupgap':1,'plot_bgcolor':'rgba(0,0,0,0)'}
-    
     fig = {'data':traces,'layout':layout}
-    plot(fig,filename=cwd+'/figures/figure1B.html',image_width=1000, image_height=500) #saves figure to 'figures' folder as an html file
-    
+    pio.write_image(fig,cwd+'/figures/figure1B.png',format='png',scale=2) #saves figure to 'figures' folder as a png file
+
     print("Figure 1B saved to 'figures' folder.")
     
     
@@ -1358,11 +1354,10 @@ def fig1():
     
     
     trace = [go.Scatter(x=xAxis,y=dfEnt['KL'],mode='markers')]
-    layout = {'title':'Kullback-Leibler Divergence (Intra-Tumoral)','xaxis':{'title':'Tumor'},'yaxis':{'title':'KL Divergence'},'boxmode':'group','plot_bgcolor':'rgba(0,0,0,0)'}
-    
+    layout = {'title':'Kullback-Leibler Divergence (Intra-Tumoral)','xaxis':{'title':'Tumor'},'yaxis':{'title':'KL Divergence'},'boxmode':'group','plot_bgcolor':'rgba(0,0,0,0)'} 
     fig = {'data':trace,'layout':layout}
-    plot(fig,filename=cwd+'/figures/figure1C.html',image_width=1000, image_height=500) #saves figure to 'figures' folder as an html file
-    
+    pio.write_image(fig,cwd+'/figures/figure1C.png',format='png',scale=2) #saves figure to 'figures' folder as a png file
+
     print("Figure 1C saved to 'figures' folder.")
     
     
@@ -1505,7 +1500,7 @@ def fig2():
     import pandas as pd
     import os
     import plotly.graph_objs as go
-    from plotly.offline import plot
+    import plotly.io as pio
     from scipy.stats import ttest_rel, wilcoxon
     import seaborn as sns
     import matplotlib.pyplot as plt
@@ -1575,11 +1570,9 @@ def fig2():
         traces.append(trace)
     
     
-    layout = {'title':'Primary vs Recurrent TiME Cell Counts' ,'xaxis':{'title':'Cell Phenotype'},'yaxis':{'title':'% Composition (Averaged Across Regions)'},'boxmode':'group'}
-    
+    layout = {'title':'Primary vs Recurrent TiME Cell Counts' ,'xaxis':{'title':'Cell Phenotype'},'yaxis':{'title':'% Composition (Averaged Across Regions)'},'boxmode':'group'}    
     fig = {'data':traces,'layout':layout}
-    
-    plot(fig,filename=cwd+'/figures/figure2A.html',image_width=1000, image_height=500) #saves figure to 'figures' folder as an html file
+    pio.write_image(fig,cwd+'/figures/figure2A.png',format='png',scale=2) #saves figure to 'figures' folder as a png file
     
     print("Figure 2A saved to 'figures' folder.")
     
@@ -1909,7 +1902,7 @@ def fig3():
     import pandas as pd
     import os
     import plotly.graph_objs as go
-    from plotly.offline import plot
+    import plotly.io as pio
     from scipy.stats import mannwhitneyu, ttest_ind
     from sklearn.preprocessing import StandardScaler
     from sklearn.decomposition import PCA
@@ -1981,9 +1974,8 @@ def fig3():
             #generate plot
             layout = {'title':titleDict[file],'showlegend':True,'autosize':False,'width':800,'height':800,'xaxis':{'visible':False},'yaxis':{'visible':False}}
             fig = {'data':traces,'layout':layout}
-           
-            plot(fig,filename=cwd+'/figures/figure3A_'+titleDict[file]+'_'+classListBigDict[i]+'.html') #saves figure to 'figures' folder as an html file
-    
+            pio.write_image(fig,cwd+'/figures/figure3A_'+titleDict[file]+'_'+classListBigDict[i]+'.png',format='png',scale=2) #saves figure to 'figures' folder as a png file
+
     print("Figure 3A saved to 'figures' folder.")
 
     
@@ -2089,7 +2081,8 @@ def fig3():
     #figure layout
     layout = {'title':'Mixing Score Across Tumor Regions','xaxis':{'title':'Tumor'},'yaxis':{'title':'Mixing Score'},'annotations':annotations}
     fig = {'data':traces,'layout':layout}
-    plot(fig,filename=cwd+'/figures/figure3B.html',image_width=1000, image_height=500) #saves figure to 'figures' folder as an html file    
+    pio.write_image(fig,cwd+'/figures/figure3B.png',format='png',scale=2) #saves figure to 'figures' folder as a png file
+    
     print("Figure 3B saved to 'figures' folder.")
     
     
@@ -2154,7 +2147,8 @@ def fig3():
     
     layout = {'title':'Neoplastic Tumor Cell Count Colored by Mixing Score Per Region','xaxis':{'title':'Region','automargin':True},'yaxis':{'title':'Neoplastic Tumor Cell Count'},'annotations':annotList}
     fig = {'data':trace,'layout':layout}
-    plot(fig,filename=cwd+'/figures/figure3C.html',image_width=1000, image_height=500) #saves figure to 'figures' folder as an html file    
+    pio.write_image(fig,cwd+'/figures/figure3C.png',format='png',scale=2) #saves figure to 'figures' folder as a png file
+
     print("Figure 3C saved to 'figures' folder.")
     
     
@@ -2219,7 +2213,8 @@ def fig3():
     
     layout = {'title':'⍺SMA+ Mesenchymal Cell Count Colored by Mixing Score Per Region','xaxis':{'title':'Region','automargin':True},'yaxis':{'title':'⍺SMA+ Mesenchymal Cell Count'},'annotations':annotList}
     fig = {'data':trace,'layout':layout}
-    plot(fig,filename=cwd+'/figures/figure3D.html',image_width=1000, image_height=500) #saves figure to 'figures' folder as an html file    
+    pio.write_image(fig,cwd+'/figures/figure3D.png',format='png',scale=2) #saves figure to 'figures' folder as a png file
+
     print("Figure 3D saved to 'figures' folder.")
     
     
@@ -2340,10 +2335,9 @@ def fig3():
     traces = [traceC,traceM]
     
     layout = {'title':'Neoplastic Tumor PD-1 and PD-L1 Expression By Spatial Architecture','xaxis':{'title':'Immunoregulatory Protein'},'yaxis':{'title':'% of Neoplastic Cells Positive'},'boxmode':'group'}
-    
     fig = {'data':traces,'layout':layout}
+    pio.write_image(fig,cwd+'/figures/figure3F.png',format='png',scale=2) #saves figure to 'figures' folder as a png file
     
-    plot(fig,filename=cwd+'/figures/figure3F.html',image_width=1000, image_height=500) #saves figure to 'figures' folder as an html file    
     print("Figure 3F saved to 'figures' folder.")
    
     #calculate p-values
@@ -2395,7 +2389,8 @@ def fig3():
     traces = [traceC,traceM]
     layout = {'title':'Lymphocyte Ki-67 Expression by Spatial Architecture','xaxis':{'title':'Spatial Architecture'},'yaxis':{'title':'% of Lymphocytes Positive'},'boxmode':'group'}
     fig = {'data':traces,'layout':layout}
-    plot(fig,filename=cwd+'/figures/figure3G.html',image_width=1000, image_height=500) #saves figure to 'figures' folder as an html file    
+    pio.write_image(fig,cwd+'/figures/figure3G.png',format='png',scale=2) #saves figure to 'figures' folder as a png file
+
     print("Figure 3G saved to 'figures' folder.")
    
     #calculate p-values
@@ -2446,8 +2441,8 @@ def fig4():
     #import packages    
     import pandas as pd
     import os
-    from plotly.offline import plot
-
+    import plotly.io as pio
+    
 
 
     #get dictionary to rename cells - used for subfigures
@@ -2514,7 +2509,8 @@ def fig4():
     #plot all clusters along x, and have one bar with all cell types (STACKED)
     layout = {'title':'Average ⍺SMA+ Mesenchymal Cell Neighborhood Cluster Composition','xaxis':{'title':'Cluster'},'yaxis':{'title':'Fraction Present'},'barmode':'stack'}
     fig = {'data':traces,'layout':layout}
-    plot(fig,filename=cwd+'/figures/figure4B.html',image_width=1000, image_height=500) #saves figure to 'figures' folder as an html file    
+    pio.write_image(fig,cwd+'/figures/figure4B.png',format='png',scale=2) #saves figure to 'figures' folder as a png file
+
     print("Figure 4B saved to 'figures' folder.")
 
 
