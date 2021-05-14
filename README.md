@@ -1,7 +1,7 @@
 # Single-Cell Spatial Proteomics Analyses of Head and Neck Squamous Cell Carcinoma Reveal Tumor Heterogeneity and Immune Architectures Associated with Clinical Outcome
 
 
-This repository contains all code necessary to reproduce the results and figures of the paper "Single-Cell Spatial Proteomics Analyses of Head and Neck Squamous Cell Carcinoma Reveal Tumor Heterogeneity and Immune Architectures Associated with Clinical Outcome." All data, including the output of the multiplex immunohistochemistry computational imaging processing workflow for each tumor region and survival data for each patient are available on Zenodo: [DOI: 10.5281/zenodo.4584441](https://doi.org/10.5281/zenodo.4584441).
+This repository contains all code necessary to reproduce the results and figures of the paper "Single-Cell Spatial Proteomics Analyses of Head and Neck Squamous Cell Carcinoma Reveal Tumor Heterogeneity and Immune Architectures Associated with Clinical Outcome." All data, including the output of the multiplex immunohistochemistry computational imaging processing workflow for each tumor region, and survival and treatment data for each patient are available on Zenodo: [DOI: 10.5281/zenodo.4584440](https://doi.org/10.5281/zenodo.4584440).
 
 # Steps to Create Figures
 
@@ -29,7 +29,7 @@ This repository contains all code necessary to reproduce the results and figures
 
 **c.** Install zenodo_get in hnsccEnv conda environment: `pip install zenodo_get`
 
-**d.** Download all data into HNSCC_mIHC_paper/data/ directory from Zenodo: `zenodo_get -r 4584441`
+**d.** Download all data into HNSCC_mIHC_paper/data/ directory from Zenodo: `zenodo_get -r 4584440`
 
 ## 4) Create Figures 1-4
 
