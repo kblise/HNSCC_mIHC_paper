@@ -1264,7 +1264,7 @@ def fig1():
         trace = go.Box(x=xAxis,y=df[col],name=nameDict[col],boxpoints='all',marker={'color':cellColors[col]},line={'color':cellColors[col]}) #note: multiply y= variable by 100 to get out of 100 (as a %)
         traces.append(trace)
     
-    layout = {'title':'Intra-Tumoral Heterogeneity (All Cell Types)','xaxis':{'title':'Tumor'},'yaxis':{'title':'Fraction Present'},'boxmode':'group','boxgroupgap':1,'plot_bgcolor':'rgba(0,0,0,0)'}
+    layout = {'title':'Intra-Tumoral Heterogeneity (All Cell Types)','xaxis':{'title':'Tumor'},'yaxis':{'title':'Fraction Present'},'boxmode':'group','plot_bgcolor':'rgba(0,0,0,0)'}
     fig = {'data':traces,'layout':layout}    
     pio.write_image(fig,cwd+'/figures/figure1A.png',format='png',scale=2) #saves figure to 'figures' folder as a png file
 
@@ -1300,7 +1300,7 @@ def fig1():
         trace = go.Box(x=xAxis,y=df[col],name=nameDict[col],boxpoints='all',marker={'color':cellColors[col]},line={'color':cellColors[col]}) #note: multiply y= variable by 100 to get out of 100 (as a %)
         traces.append(trace)
     
-    layout = {'title':'Intra-Tumoral Heterogeneity (Immune Cells Only)','xaxis':{'title':'Tumor'},'yaxis':{'title':'Fraction Present'},'boxmode':'group','boxgroupgap':1,'plot_bgcolor':'rgba(0,0,0,0)'}
+    layout = {'title':'Intra-Tumoral Heterogeneity (Immune Cells Only)','xaxis':{'title':'Tumor'},'yaxis':{'title':'Fraction Present'},'boxmode':'group','plot_bgcolor':'rgba(0,0,0,0)'}
     fig = {'data':traces,'layout':layout}
     pio.write_image(fig,cwd+'/figures/figure1B.png',format='png',scale=2) #saves figure to 'figures' folder as a png file
 
@@ -1311,55 +1311,88 @@ def fig1():
     ##FIGURE 1C - KL DIVERGENCE
     
     print('\nFigure 1C')
-    
+        
     #get df of cell counts - using the perc composition with ALL cells (immune, tumor, other)
     dfAll = pd.read_csv(cwd+'/dfCreated/dfCountsPerc_ITO_all.csv',index_col=0)
     dfAvg = pd.read_csv(cwd+'/dfCreated/dfCountsPerc_ITO_avg.csv',index_col=0)
     
+    #get average of dfAvg - average values per patient (P+R)/2
+    dfAvgCopy = dfAvg.copy()
+    dfAvgCopy.index = dfAvgCopy.index.str.slice(2,3)
+    dfAvgAvg = dfAvgCopy.groupby(['patient']).mean()
+    
+    #get average of primary only and recurrent only 
+    dfPrim = dfAll[['pre' in i for i in dfAll.index]]
+    dfPrimAvg = dfPrim.mean()
+    
+    dfRec = dfAll[['pos' in i for i in dfAll.index]]
+    dfRecAvg = dfRec.mean()
+    
+    #get average of cohort
+    dfCohortAvg = dfAvgAvg.mean()
+    
     #empty list to store KL divergence
-    entList = []
+    entListA = [] #for intra-tumoral, compares to single tumor's average
+    entListB = [] #for intra-patient, compares to single patient's average (P+R)/2
+    entListC = [] #for inter-patient, compares to all primary, or all recurrent depending on which one the region is from
+    entListD = [] #for inter-patient, compares to cohort average across ALL pts and tumors, regardless of P or R
     
     #create list of rois (patient samples)
     ptList = list(dfAll.index)
     
     #loop through ROIs
     for pt in ptList:
-
         #get row values for A-H counts for each ROI (per the pt variable)
         countRoi = dfAll.loc[pt,'A':'H'] 
         
-        #get first 6 characters to match in dfAvg index column
-        pat = pt[0:6]
+        #get character(s) to match other df's index column
+        patA = pt[0:6]
+        patB = pt[2]
         
-        #get row values for A-H counts for each tumor (averaged, use the pat variable)
-        countAvg = dfAvg.loc[pat,'A':'H']
+        #get row values for A-H counts for each tumor (averaged, use the pat variables)
+        countAvgA = dfAvg.loc[patA,'A':'H']
+        countAvgB = dfAvgAvg.loc[patB,'A':'H']
         
-        #calculate the KL Divergence using the entropy function; sample distribution's divergence from the patient's average (qk) distribution
-        ent = entropy(countRoi,qk=countAvg,base=2) #use log2 for calculation
+        if 'pre' in pt:
+            countAvgC = dfPrimAvg['A':'H']
+            
+        elif 'pos' in pt:
+            countAvgC = dfRecAvg['A':'H']
+    
+        countAvgD = dfCohortAvg['A':'H']
+        
+        #calculate the KL Divergence using the entropy function (log2) for each avg distribution; sample distribution's divergence from the tumor's, patient's, cohort's average (qk) distribution
+        entA = entropy(countRoi,qk=countAvgA,base=2) #intra-tumor
+        entB = entropy(countRoi,qk=countAvgB,base=2) #intra-patient
+        entC = entropy(countRoi,qk=countAvgC,base=2) #inter-patient (p or r)
+        entD = entropy(countRoi,qk=countAvgD,base=2) #inter-patient (all)
         
         #store KL divergence in list
-        entList.append(ent)
-            
+        entListA.append(entA)
+        entListB.append(entB)
+        entListC.append(entC)
+        entListD.append(entD)
+        
     #create new df with KL divergence info stored in one column
-    dfEnt = pd.DataFrame(entList,index=ptList,columns=['KL'])
-    
+    dfEnt = pd.DataFrame({'Intra-Tumor':entListA,'Intra-Patient':entListB,'Inter-Patient (P or R only)':entListC,'Inter-Patient (all)':entListD},index=ptList)
     
     #empty list to store x axis labels
     xAxis = []
-    
     #rename xAxis variables to 1P, 1R, etc
     for x in dfEnt.index:
         xLabel = x[2]+xDictRename[x[3:6]]
         xAxis.append(xLabel) #add label to list
     
-    
-    trace = [go.Scatter(x=xAxis,y=dfEnt['KL'],mode='markers')]
-    layout = {'title':'Kullback-Leibler Divergence (Intra-Tumoral)','xaxis':{'title':'Tumor'},'yaxis':{'title':'KL Divergence'},'boxmode':'group','plot_bgcolor':'rgba(0,0,0,0)'} 
-    fig = {'data':trace,'layout':layout}
+    traces = []
+    for col in list(dfEnt.columns):        
+        trace = go.Box(x=xAxis,y=dfEnt[col],boxpoints='all',name=col)
+        traces.append(trace)
+    layout = {'title':'Kullback-Leibler Divergence','xaxis':{'title':'Tumor'},'yaxis':{'title':'KL Divergence'},'boxmode':'group'}
+    fig = {'data':traces,'layout':layout}
     pio.write_image(fig,cwd+'/figures/figure1C.png',format='png',scale=2) #saves figure to 'figures' folder as a png file
 
     print("Figure 1C saved to 'figures' folder.")
-    
+   
     
     
     ##FIGURE 1D - HIERARCHICAL CLUSTERING OF TUMOR REGION COMPOSITION
@@ -1806,19 +1839,36 @@ def fig2():
             diffDict['aSMA+ Mesenchymal'] = diffList #matplot cannot print the alpha symbol so renaming for this plot to an 'a'
     
     dfDiff = pd.DataFrame(diffDict,index=['1','2','3','4','5','6','7','8','9'])
-    dfDiff.index.name = 'patient'
+    
+    #get treatment data and add new column to dfDiff for color coding
+    dfClin = pd.read_csv(cwd+'/data/clinicalData.csv', index_col=0)
+    dfClin = dfClin.dropna() #drop recurrent tumors
+    dfClin2 = dfClin.copy()
+    dfClin2['sample'] = dfClin2['sample'].str.slice(2,3)
+    dfClin2 = dfClin2.drop_duplicates()
+    dfClin2.set_index('sample',inplace=True)
+    
+    dfDiff['patient'] = dfDiff.index
+    dfDiff['tx'] = dfClin2['tx']
     
     #make color vector dictionary; just one needed for 1 color palette (patient ID)
-    palette1 = dict(zip(dfDiff.index,sns.color_palette("tab10",n_colors = 9))) ##9 colors for 9 patients
+    palette1 = dict(zip(dfDiff.patient,sns.color_palette("tab10",n_colors = 9))) #9 colors for 9 patients
+    palette2 = dict(zip(dfDiff.tx.unique(),sns.color_palette("Accent",n_colors=3))) #3 colors becauuse 3 tx options
     
     #make groupings
-    grouping1 = dfDiff.index #group off of color1 column
+    grouping1 = dfDiff.patient #group off of patient column
+    grouping2 = dfDiff.tx #group off of tx column
     
     #map palettes onto the corresponding grouping series
-    ptColors1 = pd.Series(grouping1).map(palette1)
-        
+    ptColors1 = pd.Series(grouping1,name='Patient ID').map(palette1)
+    ptColors2 = pd.Series(grouping2,name='Therapy').map(palette2)
+    dfColors = pd.concat([ptColors1,ptColors2], axis=1)
+    
+    #drop the last two columns before clustering on values
+    dfDiff = dfDiff[list(dfDiff.columns)[:-2]]
+    
     #plot the clusttermap with the colors; this does standard_scale ([0,1] normalization)
-    graph = sns.clustermap(dfDiff,standard_scale=1,cmap='vlag',row_colors=[ptColors1],yticklabels=True)
+    graph = sns.clustermap(dfDiff,standard_scale=1,cmap='vlag',row_colors=dfColors,yticklabels=True)
     
     #add x-axis label and title to graph
     ax = graph.ax_heatmap
@@ -1833,8 +1883,8 @@ def fig2():
     plt.savefig(cwd+'/figures/figure2D.png',format='png',bbox_inches='tight') #saves figure to 'figures' folder as a png file
     #plt.show(graph)
     plt.close()
-    print("Figure 2D saved to 'figures' folder.")        
-            
+    print("Figure 2D saved to 'figures' folder.")
+                
     
     
     ##FIGURE 2E - SURVIVAL CURVE, CD8+ T CELL
