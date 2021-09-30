@@ -1,7 +1,7 @@
 # Single-Cell Spatial Proteomics Analyses of Head and Neck Squamous Cell Carcinoma Reveal Tumor Heterogeneity and Immune Architectures Associated with Clinical Outcome
 
 
-This repository contains all code necessary to reproduce the results and figures of the paper "Single-Cell Spatial Proteomics Analyses of Head and Neck Squamous Cell Carcinoma Reveal Tumor Heterogeneity and Immune Architectures Associated with Clinical Outcome." All data, including the output of the multiplex immunohistochemistry computational imaging processing workflow for each tumor region, and survival and treatment data for each patient are available on Zenodo: [DOI: 10.5281/zenodo.4584440](https://doi.org/10.5281/zenodo.4584440).
+This repository contains all code necessary to reproduce the results and figures of the paper "Single-Cell Spatial Proteomics Analyses of Head and Neck Squamous Cell Carcinoma Reveal Tumor Heterogeneity and Immune Architectures Associated with Clinical Outcome." All data, including the output of the multiplex immunohistochemistry computational imaging processing workflow for each tumor region, and clinical data for each patient are available on Zenodo: [DOI: 10.5281/zenodo.5540356](https://doi.org/10.5281/zenodo.5540356).
 
 # Steps to Create Figures
 
@@ -29,17 +29,17 @@ This repository contains all code necessary to reproduce the results and figures
 
 **c.** Install zenodo_get in hnsccEnv conda environment: `pip install zenodo_get`
 
-**d.** Download all data into HNSCC_mIHC_paper/data/ directory from Zenodo: `zenodo_get -r 4584440`
+**d.** Download all data into HNSCC_mIHC_paper/data/ directory from Zenodo: `zenodo_get -r 5540356`
 
-## 4) Create Figures 1-4
+## 4) Create Figures 1-4, Table 3, and Supplemental Figures 1-3
 
 **a.** Navigate back to HNSCC_mIHC_paper directory: `cd ..`
 
-**b.** Run python file hnsccMakeFigures.py to create Figures 1-4: `python hnsccMakeFigures.py`
+**b.** Run python file hnsccMakeFigures.py to create Figures 1-4, Table 3, and Supplemental Figures 1-3: `python hnsccMakeFigures.py`
 
 
 
-**Note: all csvs created to generate figures will be saved to the 'dfCreated' folder and all figures will be saved to the 'figures' folder.**
+**Note: all csvs created to generate figures will be saved to the 'dfCreated' folder and all figures and tables will be saved to the 'figures' folder.**
 
 
 This program is intended for Python version 3.
