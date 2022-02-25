@@ -1,7 +1,7 @@
-# Single-Cell Spatial Proteomics Analyses of Head and Neck Squamous Cell Carcinoma Reveal Tumor Heterogeneity and Immune Architectures Associated with Clinical Outcome
+# Single-cell spatial architectures associated with clinical outcome in head and neck squamous cell carcinoma
 
 
-This repository contains all code necessary to reproduce the results and figures of the paper "Single-Cell Spatial Proteomics Analyses of Head and Neck Squamous Cell Carcinoma Reveal Tumor Heterogeneity and Immune Architectures Associated with Clinical Outcome." All data, including the output of the multiplex immunohistochemistry computational imaging processing workflow for each tumor region, and clinical data for each patient are available on Zenodo: [DOI: 10.5281/zenodo.5540356](https://doi.org/10.5281/zenodo.5540356).
+This repository contains all code necessary to reproduce the results and figures of the publication "Single-cell spatial architectures associated with clinical outcome in head and neck squamous cell carcinoma," which can be found here: [DOI: 10.1038/s41698-022-00253-z](https://doi.org/10.1038/s41698-022-00253-z). All data, including the output of the multiplex immunohistochemistry computational imaging processing workflow for each tumor region, and clinical data for each patient are available on Zenodo: [DOI: 10.5281/zenodo.5540356](https://doi.org/10.5281/zenodo.5540356).
 
 # Steps to Create Figures
 
